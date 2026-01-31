@@ -17,7 +17,7 @@ def tokenize(text):
 
 @st.cache_data(show_spinner=False)
 def predictor(texts):
-    device = 0 if torch.cuda.is_available() else -1
+    device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
     inputs = st.session_state['classif_tokenizer'](texts, return_tensors="pt", padding=True).to(device)
     outputs = st.session_state['classif_model'](**inputs)
     probas = F.softmax(outputs.logits, dim=1).detach().cpu().numpy()
