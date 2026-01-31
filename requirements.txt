@@ -1,0 +1,10 @@
+arabic-reshaper
+captum
+shap
+lime
+google-genai
+pandas
+sentence-transformers
+torch
+torchvision
+transformers
