@@ -18,13 +18,14 @@ st.set_page_config(
     initial_sidebar_state="expanded"
 )
 
-device = 0 if torch.cuda.is_available() else -1
+device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+device_index = 0 if torch.cuda.is_available() else -1  # -1 means CPU for HF pipeline
 
 @st.cache_resource(show_spinner="Loading classification model...", show_time=True)
 def load_classification_model(model_name):
     tokenizer = AutoTokenizer.from_pretrained(model_name)
     model = AutoModelForSequenceClassification.from_pretrained(model_name).to(device)
-    classif_pipe = pipeline("text-classification", model=model, tokenizer=tokenizer, device=device)
+    classif_pipe = pipeline("text-classification", model=model, tokenizer=tokenizer, device=device_index)
     return tokenizer, model, classif_pipe
 
 # classification model
